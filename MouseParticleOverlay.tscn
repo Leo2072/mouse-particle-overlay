@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://7avyp0odhy4o"]
+
+[ext_resource type="Script" uid="uid://tyfe7budfdmo" path="res://OverlayWindow.gd" id="1_r2hiy"]
+[ext_resource type="PackedScene" uid="uid://cwqbr5nq8jkt1" path="res://VisualEffects/Trail/CatTrail.tscn" id="2_0livl"]
+[ext_resource type="PackedScene" uid="uid://bkuugg6lu3n74" path="res://VisualEffects/Click/CatClick.tscn" id="3_0livl"]
+
+[node name="Node" type="Node"]
+
+[node name="Window" type="Window" parent="."]
+transparent_bg = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+oversampling = false
+oversampling_override = 1.0
+unresizable = true
+borderless = true
+always_on_top = true
+transparent = true
+minimize_disabled = true
+maximize_disabled = true
+script = ExtResource("1_r2hiy")
+
+[node name="CatTrail" parent="Window" instance=ExtResource("2_0livl")]
+
+[node name="CatClick" parent="Window" instance=ExtResource("3_0livl")]
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.216, 0.9, 0.36420003, 1)
+
+[node name="Label" type="Label" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Hi!
+This is where I will put the credits and gameplay stats.
+Not sure what kind of stats I can even do for this, though.
+...
+Oh well, I have always wanted some space to ramble.
+
+If you notice any bugs, please DM me on Discord.
+
+Thank you for testing out this prototype <3
+
+
+P.S.: Close this window to disable the trail."
+horizontal_alignment = 1
+vertical_alignment = 1

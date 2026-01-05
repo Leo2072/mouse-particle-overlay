@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwqbr5nq8jkt1"]
+
+[ext_resource type="Script" uid="uid://dltifi7f21ngi" path="res://VisualEffects/Trail/CatTrail.gd" id="1_catkm"]
+[ext_resource type="Texture2D" uid="uid://cinv4etvteleo" path="res://VisualEffects/PawPrint.png" id="2_sujpl"]
+
+[node name="CatTrail" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_catkm")
+left_print = ExtResource("2_sujpl")
+left_print_size = Vector2(16, 16)
+left_additional_rotation = 1.5707963267948966
+right_print = ExtResource("2_sujpl")
+right_print_size = Vector2(16, 16)
+right_additional_rotation = 1.5707963267948966
+print_initial_lifetime = 1.0
+idle_delay = 0.5

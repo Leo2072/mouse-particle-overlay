@@ -1,0 +1,34 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="MouseParticleOverlay"
+run/main_scene="uid://7avyp0odhy4o"
+config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=500
+window/size/viewport_height=500
+window/energy_saving/keep_screen_on=false
+window/subwindows/embed_subwindows=false
+window/per_pixel_transparency/allowed=true
+
+[dotnet]
+
+project/assembly_name="MouseParticleOverlay"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
