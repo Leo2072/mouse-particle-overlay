@@ -1,16 +1,30 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwqbr5nq8jkt1"]
+[gd_scene load_steps=7 format=3 uid="uid://cwqbr5nq8jkt1"]
 
 [ext_resource type="Script" uid="uid://dltifi7f21ngi" path="res://VisualEffects/Trail/CatTrail.gd" id="1_catkm"]
+[ext_resource type="Material" uid="uid://dfxtm67snwpq7" path="res://VisualEffects/Trail/FootprintMaterial.tres" id="2_7iufv"]
 [ext_resource type="Texture2D" uid="uid://cinv4etvteleo" path="res://VisualEffects/PawPrint.png" id="2_sujpl"]
+[ext_resource type="Script" uid="uid://b06ce33ryavh0" path="res://VisualEffects/Particles2D/ParticleManager/LifetimeParticleManager2D.gd" id="3_yhya7"]
 
-[node name="CatTrail" type="Node2D"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_yhya7"]
+size = Vector2(16, 16)
+orientation = 2
+
+[sub_resource type="MultiMesh" id="MultiMesh_yhya7"]
+use_custom_data = true
+visible_instance_count = 0
+mesh = SubResource("PlaneMesh_yhya7")
+
+[node name="CatTrail" type="Node2D" node_paths=PackedStringArray("left_print_renderer", "right_print_renderer")]
 texture_filter = 1
 script = ExtResource("1_catkm")
-left_print = ExtResource("2_sujpl")
-left_print_size = Vector2(16, 16)
+left_print_renderer = NodePath("MultiMeshInstance2D")
 left_additional_rotation = 1.5707963267948966
-right_print = ExtResource("2_sujpl")
-right_print_size = Vector2(16, 16)
+right_print_renderer = NodePath("MultiMeshInstance2D")
 right_additional_rotation = 1.5707963267948966
-print_initial_lifetime = 1.0
 idle_delay = 0.5
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
+material = ExtResource("2_7iufv")
+multimesh = SubResource("MultiMesh_yhya7")
+texture = ExtResource("2_sujpl")
+script = ExtResource("3_yhya7")

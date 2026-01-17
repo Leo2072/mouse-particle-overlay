@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://dfxtm67snwpq7"]
+
+[ext_resource type="Shader" uid="uid://j2pinm035143" path="res://VisualEffects/Trail/Lifetime.gdshader" id="1_koyok"]
+
+[sub_resource type="Gradient" id="Gradient_nl5kv"]
+offsets = PackedFloat32Array(0.7, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_s6n7l"]
+gradient = SubResource("Gradient_nl5kv")
+use_hdr = true
+
+[sub_resource type="Gradient" id="Gradient_s6n7l"]
+offsets = PackedFloat32Array(0.7468355, 1)
+colors = PackedColorArray(1, 1, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_04j0k"]
+gradient = SubResource("Gradient_s6n7l")
+use_hdr = true
+
+[resource]
+shader = ExtResource("1_koyok")
+shader_parameter/UseColourCurve = true
+shader_parameter/ColourCurve = SubResource("GradientTexture1D_s6n7l")
+shader_parameter/UseOffsetCurve = false
+shader_parameter/UseScaleRotationCurve = true
+shader_parameter/ScaleRotationCurve = SubResource("GradientTexture1D_04j0k")
+shader_parameter/transform_order = 0

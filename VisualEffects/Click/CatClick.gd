@@ -7,44 +7,47 @@ extends Node2D
     &"MOUSE_BUTTON_MASK_MIDDLE:4",
     &"MOUSE_BUTTON_MASK_MB_XBUTTON1:128",
     &"MOUSE_BUTTON_MASK_MB_XBUTTON2:256"
-) var tracked_mask: int = 1
+) var tracked_mask: int = 3
 
 
-@export var animation_player: AnimationPlayer
+@export var hold_icon: Node2D
 
-@export var click_anim: StringName = &""
 
-@export var release_anim: StringName = &""
+@export var pressed_particles_emitter: ParticleEmitter2D
+@export_range(0, 10, 1, &"or_greater") var particles_per_press: int = 10
+
+
+@export var released_particles_emitter: ParticleEmitter2D
+@export_range(0, 10, 1, &"or_greater") var particles_per_release: int = 10
 
 
 var mouse_query: GlobalKeyStateCache = GlobalKeyStateCache.new()
 var mouse_was_pressed: bool = false
 
-var play_mouse_released: bool = false
-
 
 func _process(_delta: float) -> void:
-    global_position = get_global_mouse_position()
-
     mouse_query.UpdateButtonMaskCache(get_window())
     
     if mouse_query.GetMouseButtonMask() & tracked_mask:
-        if !mouse_was_pressed and !click_anim.is_empty() and animation_player.current_animation != click_anim:
-            animation_player.play(click_anim)
+        if !mouse_was_pressed:
+            if pressed_particles_emitter:
+                for i in range(0, particles_per_press):
+                    pressed_particles_emitter.emit()
+                    pass
+                pass
+            hold_icon.visible = true
+            mouse_was_pressed = true
             pass
-        mouse_was_pressed = true
-        play_mouse_released = true
         pass
     else:
         if mouse_was_pressed:
-            mouse_was_pressed = false
-            play_mouse_released = true
-            pass
-        if play_mouse_released and !release_anim.is_empty() and animation_player.current_animation != release_anim:
-            if !animation_player.is_playing():
-                animation_player.play(release_anim)
-                play_mouse_released = false
+            if released_particles_emitter:
+                for i in range(0, particles_per_release):
+                    released_particles_emitter.emit()
+                    pass
                 pass
+            hold_icon.visible = false
+            mouse_was_pressed = false
             pass
         pass
     pass

@@ -1,56 +1,66 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkuugg6lu3n74"]
+[gd_scene load_steps=9 format=3 uid="uid://bkuugg6lu3n74"]
 
 [ext_resource type="Script" uid="uid://b7jj0b2kfedot" path="res://VisualEffects/Click/CatClick.gd" id="1_pd8eh"]
 [ext_resource type="Texture2D" uid="uid://cinv4etvteleo" path="res://VisualEffects/PawPrint.png" id="2_3l2ul"]
-[ext_resource type="AnimationLibrary" uid="uid://moroe0sb7fnk" path="res://VisualEffects/Click/PawClickReleaseAnimationLibrary.res" id="3_mchnm"]
+[ext_resource type="Material" uid="uid://dfxtm67snwpq7" path="res://VisualEffects/Trail/FootprintMaterial.tres" id="2_gklc7"]
+[ext_resource type="Script" uid="uid://dhxg06hml5lk4" path="res://VisualEffects/Particles2D/ParticleManager/LifetimePhysicsParticleManager2D.gd" id="3_mchnm"]
+[ext_resource type="Script" uid="uid://dd80hln66egy7" path="res://VisualEffects/Particles2D/ParticleEmitter/LifetimePhysicsParticleEmitter2D.gd" id="4_2u4ii"]
+[ext_resource type="Script" uid="uid://c6fa3y1dq5oiq" path="res://MouseFollower.gd" id="4_x35kh"]
 
-[sub_resource type="Animation" id="Animation_2u4ii"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
+[sub_resource type="PlaneMesh" id="PlaneMesh_mchnm"]
+size = Vector2(16, 16)
+orientation = 2
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_x35kh"]
-_data = {
-&"RESET": SubResource("Animation_2u4ii")
-}
+[sub_resource type="MultiMesh" id="MultiMesh_2u4ii"]
+use_custom_data = true
+mesh = SubResource("PlaneMesh_mchnm")
 
-[node name="CatClick" type="Node2D" node_paths=PackedStringArray("animation_player")]
+[node name="CatClick" type="Node2D" node_paths=PackedStringArray("hold_icon", "pressed_particles_emitter", "released_particles_emitter")]
 script = ExtResource("1_pd8eh")
-tracked_mask = 3
-animation_player = NodePath("AnimationPlayer")
-click_anim = &"PawClickReleaseAnimationLibrary/PawClick"
-release_anim = &"PawClickReleaseAnimationLibrary/PawRelease"
+hold_icon = NodePath("MouseFollower")
+pressed_particles_emitter = NodePath("PressedEmitter")
+released_particles_emitter = NodePath("ReleasedEmitter")
+particles_per_release = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(1, 1, 1, 0)
-texture_filter = 1
+[node name="LifetimePhysicsParticleManager2D" type="MultiMeshInstance2D" parent="."]
+material = ExtResource("2_gklc7")
+multimesh = SubResource("MultiMesh_2u4ii")
 texture = ExtResource("2_3l2ul")
-offset = Vector2(0, -4)
+script = ExtResource("3_mchnm")
+metadata/_custom_type_script = "uid://dhxg06hml5lk4"
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_x35kh"),
-&"PawClickReleaseAnimationLibrary": ExtResource("3_mchnm")
-}
+[node name="PressedEmitter" type="Node2D" parent="." node_paths=PackedStringArray("particle_manager")]
+script = ExtResource("4_2u4ii")
+min_emission_angle = -2.356194490192345
+max_emission_angle = -0.7853981633974483
+min_initial_linear_speed = 100.0
+max_initial_linear_speed = 100.0
+linear_acceleration = Vector2(0, 200)
+linear_drag = 10.0
+particle_lifetime = 1.0
+particle_manager = NodePath("../LifetimePhysicsParticleManager2D")
+metadata/_custom_type_script = "uid://dd80hln66egy7"
+
+[node name="ReleasedEmitter" type="Node2D" parent="." node_paths=PackedStringArray("particle_manager")]
+script = ExtResource("4_2u4ii")
+min_emission_angle = -1.5707963267948966
+max_emission_angle = -1.5707963267948966
+min_initial_linear_speed = 50.0
+max_initial_linear_speed = 50.0
+particle_lifetime = 1.0
+particle_manager = NodePath("../LifetimePhysicsParticleManager2D")
+metadata/_custom_type_script = "uid://dd80hln66egy7"
+
+[node name="MouseFollower" type="Node2D" parent="."]
+script = ExtResource("4_x35kh")
+
+[node name="Sprite2D" type="Sprite2D" parent="MouseFollower"]
+texture_filter = 1
+position = Vector2(0, -4)
+texture = ExtResource("2_3l2ul")
+
+[node name="PressedEmitterMover" type="RemoteTransform2D" parent="MouseFollower"]
+remote_path = NodePath("../../PressedEmitter")
+
+[node name="ReleasedEmitterMover" type="RemoteTransform2D" parent="MouseFollower"]
+remote_path = NodePath("../../ReleasedEmitter")
