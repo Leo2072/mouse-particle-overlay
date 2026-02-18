@@ -1,0 +1,10 @@
+Linux:
+|---X11
+|   |--- Load Shared Libraries.
+|   |--- Use X11 features to directly set input zone.
+|   |--> Bypass Godot cutting certain XWindow features on Wayland.
+|
+|---Wayland
+    |--- Load Shared Libraries.
+    |--- Get Global Registry and other Globals from Display when first called.
+    |--> No memory leaks.

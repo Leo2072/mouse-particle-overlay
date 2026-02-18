@@ -52,6 +52,7 @@ particle_manager = NodePath("../LifetimePhysicsParticleManager2D")
 metadata/_custom_type_script = "uid://dd80hln66egy7"
 
 [node name="MouseFollower" type="Node2D" parent="."]
+visible = false
 script = ExtResource("4_x35kh")
 
 [node name="Sprite2D" type="Sprite2D" parent="MouseFollower"]
